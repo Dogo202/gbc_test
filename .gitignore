@@ -1,0 +1,11 @@
+sync/.env
+dashboard/.env.local
+
+# Зависимости
+sync/node_modules/
+dashboard/node_modules/
+dashboard/.next/
+
+# Системные
+.DS_Store
+Thumbs.db
