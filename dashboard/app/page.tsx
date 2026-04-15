@@ -1,8 +1,10 @@
+import dynamic from "next/dynamic";
 import { fetchRecentOrders, fetchOrdersByDay, fetchStats } from "@/lib/supabase";
 import StatCard    from "@/components/StatCard";
-import OrdersChart from "@/components/OrdersChart";
-import OrdersTable from "@/components/OrdersTable";
-import UtmChart    from "@/components/UtmChart";
+
+const OrdersChart = dynamic(() => import("@/components/OrdersChart"), { ssr: false });
+const OrdersTable = dynamic(() => import("@/components/OrdersTable"), { ssr: false });
+const UtmChart    = dynamic(() => import("@/components/UtmChart"),    { ssr: false });
 
 export const revalidate = 60; // ISR: обновлять каждую минуту
 
