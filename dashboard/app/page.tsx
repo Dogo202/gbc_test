@@ -86,7 +86,7 @@ export default async function DashboardPage() {
           {/* График заказов по дням */}
           <div
             className="lg:col-span-2 bg-panel border border-border rounded-xl p-6 animate-slide-up"
-            style={{ animationDelay: "100ms", animationFillMode: "both", opacity: 0 }}
+            style={{ animationDelay: "100ms", animationFillMode: "both" }}
           >
             <div className="flex items-center justify-between mb-5">
               <div>
@@ -105,7 +105,7 @@ export default async function DashboardPage() {
           {/* UTM-источники */}
           <div
             className="bg-panel border border-border rounded-xl p-6 animate-slide-up"
-            style={{ animationDelay: "200ms", animationFillMode: "both", opacity: 0 }}
+            style={{ animationDelay: "200ms", animationFillMode: "both" }}
           >
             <h2 className="font-display text-lg text-white mb-1">Источники</h2>
             <p className="font-mono text-xs text-muted mb-5">utm_source</p>
@@ -116,7 +116,7 @@ export default async function DashboardPage() {
         {/* ── Таблица заказов ── */}
         <section
           className="bg-panel border border-border rounded-xl p-6 animate-slide-up"
-          style={{ animationDelay: "300ms", animationFillMode: "both", opacity: 0 }}
+          style={{ animationDelay: "300ms", animationFillMode: "both" }}
         >
           <div className="flex items-center justify-between mb-5">
             <div>

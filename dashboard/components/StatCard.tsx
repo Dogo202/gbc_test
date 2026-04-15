@@ -21,7 +21,7 @@ export default function StatCard({ label, value, sub, icon, accent, delay = 0 }:
           ? "border-accent/30 bg-accent/5 glow"
           : "border-border bg-panel"
       )}
-      style={{ animationDelay: `${delay}ms`, animationFillMode: "both", opacity: 0 }}
+      style={{ animationDelay: `${delay}ms`, animationFillMode: "both" }}
     >
       {/* фоновый круг */}
       <div
