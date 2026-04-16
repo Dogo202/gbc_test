@@ -83,3 +83,4 @@ nova-dashboard/
 Страница использует **ISR** (Incremental Static Regeneration) с `revalidate = 60` — данные обновляются каждые 60 секунд без ручного деплоя.
 
 Для real-time обновлений можно добавить Supabase Realtime подписки в клиентский компонент.
+# Nova Orders Dashboard
