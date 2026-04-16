@@ -4,8 +4,12 @@ import {
   ComposedChart, Bar, Line, XAxis, YAxis, CartesianGrid,
   Tooltip, ResponsiveContainer, Legend,
 } from "recharts";
-import { format, parseISO } from "date-fns";
-import { ru } from "date-fns/locale";
+
+function fmtDay(dateStr: string): string {
+  const d = new Date(dateStr);
+  if (isNaN(d.getTime())) return dateStr;
+  return d.toLocaleString("ru-RU", { day: "numeric", month: "short" });
+}
 
 type DataPoint = { date: string; count: number; revenue: number };
 
@@ -14,7 +18,7 @@ const CustomTooltip = ({ active, payload, label }: any) => {
   return (
     <div style={{ background: "#161b22", border: "1px solid #21262d", borderRadius: 8, padding: "10px 14px" }}>
       <p style={{ color: "#8b949e", fontSize: 11, marginBottom: 6 }}>
-        {format(parseISO(label), "d MMM yyyy", { locale: ru })}
+        {label}
       </p>
       {payload.map((p: any) => (
         <p key={p.name} style={{ color: p.color, fontSize: 12 }}>
@@ -30,11 +34,8 @@ const CustomTooltip = ({ active, payload, label }: any) => {
 
 export default function OrdersChart({ data }: { data: DataPoint[] }) {
   const formatted = data
-    .filter((d) => d.date && !isNaN(parseISO(d.date).getTime()))
-    .map((d) => ({
-      ...d,
-      label: format(parseISO(d.date), "d MMM", { locale: ru }),
-    }));
+    .filter((d) => d.date && !isNaN(new Date(d.date).getTime()))
+    .map((d) => ({ ...d, label: fmtDay(d.date) }));
 
   return (
     <div style={{ width: "100%", height: 280 }}>

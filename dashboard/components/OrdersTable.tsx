@@ -1,9 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import { format } from "date-fns";
-import { ru } from "date-fns/locale";
 import type { Order } from "@/lib/supabase";
+
+function fmtDate(str: string | null): string {
+  if (!str) return "—";
+  const d = new Date(str);
+  if (isNaN(d.getTime())) return "—";
+  return d.toLocaleString("ru-RU", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
+}
 import StatusBadge from "./StatusBadge";
 
 export default function OrdersTable({ orders }: { orders: Order[] }) {
@@ -91,7 +96,7 @@ export default function OrdersTable({ orders }: { orders: Order[] }) {
                     <StatusBadge status={order.status} />
                   </td>
                   <td style={{ padding: "10px 16px", color: "#8b949e", fontFamily: "monospace", fontSize: 12, whiteSpace: "nowrap" }}>
-                    {order.created_at ? format(new Date(order.created_at), "d MMM, HH:mm", { locale: ru }) : "—"}
+                    {fmtDate(order.created_at)}
                   </td>
                 </tr>
               ))
