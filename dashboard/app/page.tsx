@@ -38,7 +38,7 @@ export default async function DashboardPage() {
             </span>
           </div>
           <h1 style={{ fontSize: 48, fontWeight: 400, lineHeight: 1.1, color: "#fff", margin: 0 }}>
-            Nova <span style={{ color: "#00ff9d" }}>Orders</span>
+            Orders <span style={{ color: "#00ff9d" }}>Dashboard</span>
           </h1>
           <p style={{ color: "#8b949e", fontSize: 14, marginTop: 4 }}>
             RetailCRM → Supabase · аналитика заказов в реальном времени
@@ -84,7 +84,7 @@ export default async function DashboardPage() {
         </div>
 
         <footer style={{ textAlign: "center", color: "#8b949e", fontSize: 12, fontFamily: "monospace", paddingBottom: 16 }}>
-          Nova Dashboard · данные обновляются каждые 60 секунд
+          Orders Dashboard · данные обновляются каждые 60 секунд
         </footer>
       </div>
     </div>

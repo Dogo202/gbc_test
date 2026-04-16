@@ -19,7 +19,7 @@ const sans = DM_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Nova · Orders Dashboard",
+  title: "Orders Dashboard",
   description: "RetailCRM → Supabase order analytics",
 };
 
