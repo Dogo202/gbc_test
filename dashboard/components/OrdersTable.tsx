@@ -91,7 +91,7 @@ export default function OrdersTable({ orders }: { orders: Order[] }) {
                     <StatusBadge status={order.status} />
                   </td>
                   <td style={{ padding: "10px 16px", color: "#8b949e", fontFamily: "monospace", fontSize: 12, whiteSpace: "nowrap" }}>
-                    {format(new Date(order.created_at), "d MMM, HH:mm", { locale: ru })}
+                    {order.created_at ? format(new Date(order.created_at), "d MMM, HH:mm", { locale: ru }) : "—"}
                   </td>
                 </tr>
               ))
