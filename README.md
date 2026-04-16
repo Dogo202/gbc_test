@@ -22,24 +22,17 @@
 ## Как делал — по шагам
 
 Перед началом изучил опыт других и учёл типичные проблемы заранее:
-- trailing slash в `RETAILCRM_URL` вызывает 405 Method Not Allowed — добавил `.replace(/\/$/, '')` на старте
-- `apiKey` нужно передавать в query string для GET-запросов
 - при повторных запусках sync.js могут дублироваться Telegram-уведомления — сразу сделал флаг `telegram_notified` в Supabase вместо Set() в памяти
 - UPSERT вместо INSERT чтобы не было дублей в базе
+- API отвечал ошибкой `"eshop-individual" does not exist`. Оказалось, в демо-аккаунте только один тип заказа — `main`. Решил через функцию `getAvailableOrderType()` которая запрашивает справочник `/api/v5/reference/order-types` и автоматически выбирает первый доступный тип.
 
-**Где застрял 1 — тип заказа не существует.**
-API отвечал ошибкой `"eshop-individual" does not exist`. Оказалось, в демо-аккаунте только один тип заказа — `main`. Решил через функцию `getAvailableOrderType()` которая запрашивает справочник `/api/v5/reference/order-types` и автоматически выбирает первый доступный тип.
-
-**Где застрял 2 — Method Not Allowed при создании заказов.**
-POST-запросы падали с 405. Проблема оказалась в endpoint: использовал `/api/v5/orders` вместо `/api/v5/orders/create`. RetailCRM требует отдельный endpoint для создания.
-
-**Где застрял 3 — Parameter 'site' is missing.**
+**Где застрял 1 — Parameter 'site' is missing.**
 RetailCRM требует передавать символьный код магазина (`site`) при создании заказа. Добавил `RETAILCRM_SITE` в `.env` и передаю его в form body.
 
-**Где застрял 4 — стили не работали на Vercel.**
+**Где застрял 2 — стили не работали на Vercel.**
 Tailwind, postcss и autoprefixer были в `devDependencies` — Vercel в production их не устанавливал. Перенёс в `dependencies`. Параллельно переписал критические layout-стили на инлайн чтобы не зависеть от Tailwind для базовой структуры.
 
-**Где застрял 5 — RangeError: Invalid time value на клиенте.**
+**Где застрял 3 — RangeError: Invalid time value на клиенте.**
 `date-fns` в клиентских компонентах падал при невалидных датах из Supabase. Убрал `date-fns` из клиентских компонентов, заменил на нативный `Date.toLocaleString()` с проверкой `isNaN`.
 
 **Дашборд** строил на Next.js 14 с App Router. Данные из Supabase тянутся server-side. Recharts-компоненты загружаются через `dynamic(..., { ssr: false })` чтобы избежать hydration mismatch.
@@ -50,7 +43,26 @@ Tailwind, postcss и autoprefixer были в `devDependencies` — Vercel в pr
 
 ## Промпты которые я использовал
 
-<!-- Вставь сюда промпты которые давал Claude -->
+ 
+> Мне нужно написать скрипт на [Node.js/Python], который выполняет две задачи:
+  Читает файл mock_orders.json (50 заказов) и загружает их в RetailCRM через API.
+  Регулярно (или по запуску) забирает новые заказы из RetailCRM и синхронизирует их с таблицей в Supabase.
+  Пожалуйста:
+  Спроектируй структуру таблицы в Supabase, чтобы она соответствовала полям из RetailCRM (ID, сумма, статус, дата).
+  Напиши чистый код скрипта с использованием официальных SDK или axios.
+  Используй переменные окружения (.env) для API-ключей и URL." 
+
+> Мне нужно создать веб-дашборд на Next.js или React, который будет отображать данные из таблицы Supabase, созданной на предыдущем шаге. Требования: 
+ Главный экран: График заказов по дням (используй библиотеку Recharts или Chart.js).
+ Список последних заказов в виде таблицы.
+ Стильный интерфейс на Tailwind CSS.
+ Код должен быть готов к деплою на Vercel (подключение через стандартный коннектор Supabase)." 
+
+> Настрой логику уведомлений в Telegram. Условие: Если в RetailCRM появляется заказ на сумму более 50,000 тенге (₸), бот должен отправить сообщение в чат. Подскажи лучший вариант реализации: 
+  Использовать Webhooks от RetailCRM (если позволяет демо-аккаунт).
+  Или добавить проверку суммы в наш основной скрипт синхронизации. Напиши код для отправки сообщения через Telegram Bot API и приложи инструкцию, как получить Token и Chat ID."
+
+
 
 ---
 
@@ -87,28 +99,6 @@ gbc/
 
 ---
 
-## Запуск локально
-
-```bash
-# Sync
-cd sync
-cp .env.example .env
-# заполнить .env своими ключами
-npm install
-node upload.js          # загрузить заказы в RetailCRM
-node sync.js            # разовая синхронизация в Supabase
-node sync.js --watch    # авто-синхронизация каждые 5 минут
-
-# Dashboard
-cd dashboard
-cp .env.local.example .env.local
-# заполнить .env.local
-npm install
-npm run dev             # http://localhost:3000
-```
-
----
-
 ## Переменные окружения
 
 ### sync/.env
@@ -121,7 +111,7 @@ SUPABASE_URL=https://xxx.supabase.co
 SUPABASE_SERVICE_KEY=eyJ...           # service_role ключ
 
 TELEGRAM_BOT_TOKEN=...
-TELEGRAM_CHAT_ID=-100...             # ID группы (отрицательный)
+TELEGRAM_CHAT_ID=100...             # ID чата
 NOTIFY_THRESHOLD_SUM=50000
 SYNC_INTERVAL_MS=300000
 UPLOAD_BATCH_DELAY_MS=500
