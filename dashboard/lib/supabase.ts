@@ -53,6 +53,7 @@ export async function fetchOrdersByDay(): Promise<{ date: string; count: number;
   const map = new Map<string, { count: number; revenue: number }>();
 
   for (const row of data ?? []) {
+    if (!row.created_at) continue;
     const day = row.created_at.slice(0, 10); // YYYY-MM-DD
     const cur = map.get(day) ?? { count: 0, revenue: 0 };
     map.set(day, {

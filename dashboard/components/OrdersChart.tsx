@@ -29,10 +29,12 @@ const CustomTooltip = ({ active, payload, label }: any) => {
 };
 
 export default function OrdersChart({ data }: { data: DataPoint[] }) {
-  const formatted = data.map((d) => ({
-    ...d,
-    label: format(parseISO(d.date), "d MMM", { locale: ru }),
-  }));
+  const formatted = data
+    .filter((d) => d.date && !isNaN(parseISO(d.date).getTime()))
+    .map((d) => ({
+      ...d,
+      label: format(parseISO(d.date), "d MMM", { locale: ru }),
+    }));
 
   return (
     <div style={{ width: "100%", height: 280 }}>
