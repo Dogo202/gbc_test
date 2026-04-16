@@ -2,7 +2,7 @@
 
 import type { Order } from "@/lib/supabase";
 
-const UTM_COLORS: Record<string, string> = {
+const COLORS: Record<string, string> = {
   instagram: "#ec4899",
   google:    "#60a5fa",
   tiktok:    "#22d3ee",
@@ -21,26 +21,23 @@ export default function UtmChart({ orders }: { orders: Order[] }) {
   const max = sorted[0]?.[1] ?? 1;
 
   return (
-    <div className="flex flex-col gap-3">
+    <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
       {sorted.map(([src, cnt]) => (
-        <div key={src} className="flex items-center gap-3">
-          <span
-            className="font-mono text-xs w-20 text-right shrink-0"
-            style={{ color: UTM_COLORS[src] ?? "#8b949e" }}
-          >
+        <div key={src} style={{ display: "flex", alignItems: "center", gap: 12 }}>
+          <span style={{ color: COLORS[src] ?? "#8b949e", fontFamily: "monospace", fontSize: 12, width: 72, textAlign: "right", flexShrink: 0 }}>
             {src}
           </span>
-          <div className="flex-1 h-5 bg-dim rounded-full overflow-hidden">
-            <div
-              className="h-full rounded-full transition-all duration-700"
-              style={{
-                width: `${(cnt / max) * 100}%`,
-                background: UTM_COLORS[src] ?? "#8b949e",
-                opacity: 0.75,
-              }}
-            />
+          <div style={{ flex: 1, height: 20, background: "#30363d", borderRadius: 999, overflow: "hidden" }}>
+            <div style={{
+              width: `${(cnt / max) * 100}%`,
+              height: "100%",
+              background: COLORS[src] ?? "#8b949e",
+              borderRadius: 999,
+              opacity: 0.75,
+              transition: "width 0.7s ease",
+            }} />
           </div>
-          <span className="font-mono text-xs text-white w-8 shrink-0">{cnt}</span>
+          <span style={{ color: "#fff", fontFamily: "monospace", fontSize: 12, width: 28, flexShrink: 0 }}>{cnt}</span>
         </div>
       ))}
     </div>
